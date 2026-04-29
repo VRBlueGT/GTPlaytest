@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
 using XLua;
-using System.IO;
 
 public class LuaRunner : MonoBehaviour
 {
-    public string filePath;
+    public TextAsset luaFile;
     private LuaEnv luaEnv;
+
+    void Awake()
+    {
+        luaEnv = new LuaEnv();
+    }
 
     void Start()
     {
-        luaEnv = new LuaEnv();
-
-        if (File.Exists(filePath))
+        if (luaFile != null)
         {
-            string luaCode = File.ReadAllText(filePath);
-            luaEnv.DoString(luaCode);
+            luaEnv.DoString(luaFile.text);
         }
         else
         {
-            Debug.LogError("Lua file not found: " + filePath);
+            Debug.LogError("No Lua TextAsset assigned");
         }
     }
 
